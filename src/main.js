@@ -1,13 +1,13 @@
-// Jim Whitehead
-// Created: 4/14/2024
+// Kevin Tan
+// Created: 5/14/2024
 // Phaser: 3.70.0
 //
-// Cubey
+// Mah Muhg
 //
-// An example of putting sprites on the screen using Phaser
+// A upward side-scrolling platformer. 
 // 
-// Art assets from Kenny Assets "Shape Characters" set:
-// https://kenney.nl/assets/shape-characters
+// Art assets from Kenny Assets "1-Bit Platformer Pack" set:
+// https://kenney.nl/assets/1-bit-platformer-pack
 
 // debug with extreme prejudice
 "use strict"
@@ -19,12 +19,20 @@ let config = {
     render: {
         pixelArt: true  // prevent pixel art from getting blurred when scaled
     },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: true,
+            gravity: {
+                x: 0,
+                y: 0
+            }
+        }
+    },
     // map is 15x45 32px tiles
-    // camera is 10 tiles high, 15 tiles wide
-    width: 480,
-    height: 320,
-    scene: [LevelOne],
-    fps: { forceSetTimeOut: true, target: 60 }
+    width: 480, // camera width
+    height: 320, // camera height
+    scene: [Load, LevelOne]
 }
 
 const game = new Phaser.Game(config);
