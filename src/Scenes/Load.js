@@ -54,12 +54,12 @@ class Load extends Phaser.Scene {
             ],
         });
 
-        this.anims.create({
-            key: 'spring',
-            defaultTextureKey: "spring_sprites",
-            frames: ["springUp1.png", "springUp2.png", "springUp1.png"],
-            frameRate: 15
-        });
+        // this.anims.create({
+        //     key: 'spring',
+        //     defaultTextureKey: "spring_sprites",
+        //     frames: ["springUp1.png", "springUp2.png", "springUp1.png"],
+        //     frameRate: 15
+        // });
 
          // ...and pass to the next Scene
          this.scene.start("levelOne");
