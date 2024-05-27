@@ -76,7 +76,7 @@ class LevelOne extends Phaser.Scene {
         // ===  P L A Y E R  ===
         // init 
         // original spawn: 80, 1344
-        my.sprite.player = this.physics.add.sprite(80, 80, "player_sprites", "playerIdle.png");
+        my.sprite.player = this.physics.add.sprite(80, 1344, "player_sprites", "playerIdle.png");
         my.sprite.player.setCollideWorldBounds(true);
         my.sprite.player.setScale(SCALE);
 
