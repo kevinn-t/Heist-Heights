@@ -1,0 +1,167 @@
+{
+	"textures": [
+		{
+			"image": "playerSprites.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 117,
+				"h": 15
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "playerJump.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 16,
+						"h": 13
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 16,
+						"h": 13
+					}
+				},
+				{
+					"filename": "playerWalk4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 2,
+						"w": 16,
+						"h": 13
+					},
+					"frame": {
+						"x": 19,
+						"y": 1,
+						"w": 16,
+						"h": 13
+					}
+				},
+				{
+					"filename": "playerWalk2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 3,
+						"w": 14,
+						"h": 13
+					},
+					"frame": {
+						"x": 37,
+						"y": 1,
+						"w": 14,
+						"h": 13
+					}
+				},
+				{
+					"filename": "playerWalk3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 3,
+						"w": 14,
+						"h": 13
+					},
+					"frame": {
+						"x": 53,
+						"y": 1,
+						"w": 14,
+						"h": 13
+					}
+				},
+				{
+					"filename": "playerIdle.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 4,
+						"w": 14,
+						"h": 12
+					},
+					"frame": {
+						"x": 69,
+						"y": 1,
+						"w": 14,
+						"h": 12
+					}
+				},
+				{
+					"filename": "playerWalk1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 4,
+						"w": 14,
+						"h": 12
+					},
+					"frame": {
+						"x": 85,
+						"y": 1,
+						"w": 14,
+						"h": 12
+					}
+				},
+				{
+					"filename": "playerDead.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 8,
+						"w": 15,
+						"h": 8
+					},
+					"frame": {
+						"x": 101,
+						"y": 1,
+						"w": 15,
+						"h": 8
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:9f21a332266ec7585e557deb4d7a0fd5:7363041bfc300786155e3043cf721b2c:cd2318812e340d016acb199f2af6a8cb$"
+	}
+}

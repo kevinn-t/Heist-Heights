@@ -1,0 +1,83 @@
+{
+	"textures": [
+		{
+			"image": "particles.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 32,
+				"h": 14
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "L_smoke_particle.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 2,
+						"w": 12,
+						"h": 12
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 12,
+						"h": 12
+					}
+				},
+				{
+					"filename": "S_smoke_particle.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 5,
+						"w": 6,
+						"h": 11
+					},
+					"frame": {
+						"x": 15,
+						"y": 1,
+						"w": 6,
+						"h": 11
+					}
+				},
+				{
+					"filename": "M_smoke_particle.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 8,
+						"h": 8
+					},
+					"frame": {
+						"x": 23,
+						"y": 1,
+						"w": 8,
+						"h": 8
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:04fd1607da26e7ce005a97524fea6021:9c4e113d624990086e75b29c6673d975:767f0aa26e08023d62afa20c0c952bea$"
+	}
+}

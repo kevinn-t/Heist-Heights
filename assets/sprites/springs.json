@@ -1,0 +1,83 @@
+{
+	"textures": [
+		{
+			"image": "springSprites.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 18,
+				"h": 44
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "springUp2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 16,
+						"h": 16
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 16,
+						"h": 16
+					}
+				},
+				{
+					"filename": "springUp1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 16,
+						"h": 13
+					},
+					"frame": {
+						"x": 1,
+						"y": 19,
+						"w": 16,
+						"h": 13
+					}
+				},
+				{
+					"filename": "springIdle.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 7,
+						"w": 16,
+						"h": 9
+					},
+					"frame": {
+						"x": 1,
+						"y": 34,
+						"w": 16,
+						"h": 9
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:a2ba74df8eef69c55bb5e6203ee2ab4a:ab02bb86967b153c6882d792abf8713f:e5d2d1999b1c074e77c27c17dc30412c$"
+	}
+}

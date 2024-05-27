@@ -29,10 +29,13 @@ let config = {
             }
         }
     },
-    // map is 15x45 32px tiles
+    // map is 15x45 32px tiles: 480x1440
     width: 480, // camera width
     height: 320, // camera height
-    scene: [Load, LevelOne]
+    scene: [Load, LevelOne, Ending]
 }
 
+var cursors;
+const SCALE = 2.0;
+var my = {sprite: {}, text: {}, vfx: {}};
 const game = new Phaser.Game(config);

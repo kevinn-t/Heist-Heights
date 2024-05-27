@@ -1,9 +1,8 @@
-class LevelOne extends Phaser.Scene {
+class Ending extends Phaser.Scene {
 
     constructor() {
-        super("levelOne");
+        super("ending");
     }
-
     init() {
         // variables and settings
         this.ACCELERATION = 300;
@@ -12,10 +11,9 @@ class LevelOne extends Phaser.Scene {
         this.JUMP_VELOCITY = -500;
         this.score = 0;
     }
-
     create() {
         // === T I L E M A P  &  T I L E S E T  ===
-        this.map = this.add.tilemap("firstLevel", 16, 16, 15, 45);
+        this.map = this.add.tilemap("ending", 16, 16, 15, 45);
         this.physics.world.setBounds(0,0, 15*32 , 45*32);
         this.tileset = this.map.addTilesetImage("one-bit-tiles", "tilemap_tiles");
 
@@ -38,45 +36,9 @@ class LevelOne extends Phaser.Scene {
         this.decoLayer = this.map.createLayer("Deco", this.tileset, 0, 0);
         this.decoLayer.setScale(SCALE);
 
-        this.spikeLayer = this.map.createLayer("Harmful", this.tileset, 0, 0);
-        this.spikeLayer.setScale(SCALE);
-        this.spikeLayer.setCollisionByProperty({
-            harmful: true
-        });
-
-        // ===  O B J E C T S  ===
-        // jewels
-        this.jewels = this.map.createFromObjects("Jewels", {
-            name: "jewel",
-            key: "tilemap_sheet",
-            frame: 62
-        });
-        this.jewels.map((jewel) => {
-            jewel.scale *= SCALE;
-            jewel.x *= SCALE;
-            jewel.y *= SCALE;
-        });
-        this.physics.world.enable(this.jewels, Phaser.Physics.Arcade.STATIC_BODY);
-        this.jewelGroup = this.add.group(this.jewels);
-
-        // springs
-        my.sprite.spring1 = this.physics.add.staticSprite(80, 1168, 'spring_sprites', 'springUp1.png');
-        my.sprite.spring1.setScale(SCALE);
-        my.sprite.spring2 = this.physics.add.staticSprite(48, 816, 'spring_sprites', 'springUp1.png');
-        my.sprite.spring2.setScale(SCALE);
-        my.sprite.spring3 = this.physics.add.staticSprite(48, 400, 'spring_sprites', 'springUp1.png');
-        my.sprite.spring3.setScale(SCALE);
-        my.sprite.spring4 = this.physics.add.staticSprite(208, 208, 'spring_sprites', 'springUp1.png');
-        my.sprite.spring4.setScale(SCALE);
-
-        // exit
-        my.sprite.exit = this.physics.add.staticSprite(432, 80, 'exit');
-        my.sprite.exit.setScale(SCALE); 
-
         // ===  P L A Y E R  ===
-        // init 
-        // original spawn: 80, 1344
-        my.sprite.player = this.physics.add.sprite(80, 80, "player_sprites", "playerIdle.png");
+        // init
+        my.sprite.player = this.physics.add.sprite(48, 240, "player_sprites", "playerIdle.png");
         my.sprite.player.setCollideWorldBounds(true);
         my.sprite.player.setScale(SCALE);
 
@@ -84,7 +46,9 @@ class LevelOne extends Phaser.Scene {
         cursors = this.input.keyboard.createCursorKeys();
         this.left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.right = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.climb = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.jump = this.input.keyboard.addKey("SPACE");
+        this.fall = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         
         // extra tools
         this.reset = this.input.keyboard.addKey("R");
@@ -93,7 +57,6 @@ class LevelOne extends Phaser.Scene {
             this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
             this.physics.world.debugGraphic.clear()
         }, this);
-        this.goNext = this.input.keyboard.addKey("P");
 
         // ===  P A R T I C L E S  ===
         // walking vfx
@@ -110,51 +73,16 @@ class LevelOne extends Phaser.Scene {
         });
         my.vfx.walking.stop();
 
-
-        // ===  C A M E R A  ===
-        this.cameras.main.setSize(480, 352);
-        this.cameras.main.setBounds(0, 0, 480, 1440);
-        this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25); // (target, [,roundPixels][,lerpX][,lerpY])
-
-
         // ===  P L A Y E R  C O L L I S I O N S   &   I N T E R A C T I O N S  ===
         // environment
         this.physics.add.collider(my.sprite.player, this.blocksLayer);
-
-        this.physics.add.collider(my.sprite.player, this.spikeLayer, 
-            ()=>{
-                this.scene.start("levelOne");
-            }
-        );
 
         my.extraCollider = this.physics.add.collider(my.sprite.player, this.platformsLayer, null, function (obj1, obj2) {
             return((obj1.y + obj1.displayHeight/2) <= (obj2.y*16*SCALE + 5));
         });
 
-        // jewels
-        this.physics.add.overlap(my.sprite.player, this.jewelGroup, (obj1, obj2) => {
-            obj2.destroy();
-            this.score += 20;
-        });
-
-        // springs
-        this.physics.add.overlap(my.sprite.player, my.sprite.spring1, (obj1, obj2) => {
-            obj1.setVelocityY(this.JUMP_VELOCITY * 2);
-        });
-        this.physics.add.overlap(my.sprite.player, my.sprite.spring2, (obj1, obj2) => {
-            obj1.setVelocityY(this.JUMP_VELOCITY * 2);
-        });
-        this.physics.add.overlap(my.sprite.player, my.sprite.spring3, (obj1, obj2) => {
-            obj1.setVelocityY(this.JUMP_VELOCITY * 2);
-        });
-        this.physics.add.overlap(my.sprite.player, my.sprite.spring4, (obj1, obj2) => {
-            obj1.setVelocityY(this.JUMP_VELOCITY * 2);
-        });
-
-        // exit to next level
-        this.physics.add.overlap(my.sprite.player, my.sprite.exit, (obj1, obj2) => {
-            this.scene.start("ending");
-        }); 
+        // === M E S S A G E  T E X T  ===
+        // this.add.bitmapText(48, 288, 'blocks_font', 'Looks like your mug is in another house...', 13);
     }
 
     update(time, delta) {
@@ -199,13 +127,7 @@ class LevelOne extends Phaser.Scene {
 
         // Reset Scene
         if(Phaser.Input.Keyboard.JustDown(this.reset)) {
-            this.scene.restart();
-        }
-
-        // End Scene
-        if(Phaser.Input.Keyboard.JustDown(this.goNext)) {
-            this.scene.start('ending');
+            this.scene.start('levelOne');
         }
     }
-
 }

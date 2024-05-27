@@ -8,50 +8,56 @@ class Load extends Phaser.Scene {
         // Load tilemap information
         this.load.image("tilemap_tiles", "tilemap_packed.png");
         this.load.tilemapTiledJSON("firstLevel", "LevelOne.tmj");   // Tilemap in JSON
+        this.load.tilemapTiledJSON("ending", "End.tmj");
+        this.load.spritesheet("tilemap_sheet", "tilemap_packed.png", {
+            frameWidth: 16,
+            frameHeight: 16
+        });
+        // Load spritesheets
+        this.load.setPath("./assets/sprites/")
+        this.load.atlas("player_sprites", "playerSprites.png", "playerSprites.json");
+        this.load.atlas("particle_sprites", "particles.png", "particles.json");
+        this.load.atlas("spring_sprites", "springs.png", "springs.json")
 
-        this.load.setPath("./assets/sprites/");
-        this.load.image("playerIdle", "playerIdle.png");
-        this.load.image("playerWalk1", "playerWalk1.png");
-        this.load.image("playerWalk2", "playerWalk2.png");
-        this.load.image("playerWalk3", "playerWalk3.png");
-        this.load.image("playerWalk4", "playerWalk4.png");
-        this.load.image("playerJump", "playerJump.png");
-        this.load.image("springIdle", "springIdle.png");
-        this.load.image("springUp1", "springUp1.png");
-        this.load.image("springUp2", "springUp2.png");
-        this.load.image("jewelDefault", "jewelDefault.png");
-        this.load.image("jewelShining", "jewelShining.png");
+        // independent stuff
+        this.load.image('exit', 'exit.png');
+        this.load.bitmapFont('blocks_font', 'Kenney Blocks Font.png', "Kenney Blocks Font.fnt");
     }
 
     create() {
         this.anims.create({
             key: 'idle',
-            frames: ["playerIdle"],
+            defaultTextureKey: "player_sprites",
+            frames: [
+                { frame: "playerIdle.png" }
+            ],
             repeat: -1
         });
 
         this.anims.create({
             key: 'walk',
-            frames: ["playerWalk1", "playerWalk2", "playerWalk3", "playerWalk4"],
+            frames: this.anims.generateFrameNames("player_sprites", {
+                prefix: "playerWalk",
+                start: 1,
+                end: 4,
+                suffix: ".png"
+            }),
             frameRate: 15,
             repeat: -1
         });
 
         this.anims.create({
             key: 'jump',
-            frames: ["playerJump"]
-        });
-
-        this.anims.create({
-            key: 'jewel',
-            frames: ["jewelShining", "jewelDefault"],
-            frameRate: 15,
-            repeat: -1
+            defaultTextureKey: "player_sprites",
+            frames: [
+                { frame: "playerJump.png" }
+            ],
         });
 
         this.anims.create({
             key: 'spring',
-            frames: ["springIdle", "springUp1", "springUp2"],
+            defaultTextureKey: "spring_sprites",
+            frames: ["springUp1.png", "springUp2.png", "springUp1.png"],
             frameRate: 15
         });
 
