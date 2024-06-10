@@ -1,7 +1,7 @@
-class LevelOne extends Phaser.Scene {
+class LevelTwo extends Phaser.Scene {
 
     constructor() {
-        super("levelOne");
+        super("levelTwo");
     }
 
     init() {
@@ -15,7 +15,7 @@ class LevelOne extends Phaser.Scene {
 
     create() {
         // === T I L E M A P  &  T I L E S E T  ===
-        this.map = this.add.tilemap("firstLevel", 16, 16, 15, 45);
+        this.map = this.add.tilemap("secondLevel", 16, 16, 15, 45);
         this.physics.world.setBounds(0,0, 15*32 , 45*32);
         this.tileset = this.map.addTilesetImage("one-bit-tiles", "tilemap_tiles");
 
@@ -60,25 +60,31 @@ class LevelOne extends Phaser.Scene {
         this.jewelGroup = this.add.group(this.jewels);
 
         // springs
-        my.sprite.spring1 = this.physics.add.staticSprite(80, 1168, 'spring_sprites', 'springUp1.png');
+        my.sprite.spring1 = this.physics.add.staticSprite(208, 944, 'spring_sprites', 'springUp1.png');
         my.sprite.spring1.setScale(SCALE);
-        my.sprite.spring2 = this.physics.add.staticSprite(48, 816, 'spring_sprites', 'springUp1.png');
+        my.sprite.spring2 = this.physics.add.staticSprite(80, 304, 'spring_sprites', 'springUp1.png');
         my.sprite.spring2.setScale(SCALE);
-        my.sprite.spring3 = this.physics.add.staticSprite(48, 400, 'spring_sprites', 'springUp1.png');
-        my.sprite.spring3.setScale(SCALE);
-        my.sprite.spring4 = this.physics.add.staticSprite(208, 208, 'spring_sprites', 'springUp1.png');
-        my.sprite.spring4.setScale(SCALE);
 
         // exit
-        my.sprite.exit = this.physics.add.staticSprite(432, 80, 'exit');
-        my.sprite.exit.setScale(SCALE); 
+        this.exit = this.map.createFromObjects("Exit", {
+            name: "exit",
+            key: "tilemap_sheet",
+            frame: 59
+        });
+        this.exit.map((exit) => {
+            exit.scale *= SCALE;
+            exit.x *= SCALE;
+            exit.y *= SCALE;
+        });
+        this.physics.world.enable(this.exit, Phaser.Physics.Arcade.STATIC_BODY);
+        this.exitGroup = this.add.group(this.exit);
 
         // ===  P L A Y E R  ===
         // init 
-        // original spawn: 80, 1344
-        my.sprite.player = this.physics.add.sprite(80, 1344, "player_sprites", "playerIdle.png");
+        // original spawn: 48, 1392
+        my.sprite.player = this.physics.add.sprite(48, 1392, "player_sprites", "playerIdle.png");
         my.sprite.player.setCollideWorldBounds(true);
-        my.sprite.player.setScale(SCALE);
+        my.sprite.player.setScale(1.75);
 
         // movement controls
         cursors = this.input.keyboard.createCursorKeys();
@@ -100,8 +106,8 @@ class LevelOne extends Phaser.Scene {
         my.vfx.walking = this.add.particles(0, 0, "particle_sprites", {
             frames: ['S_smoke_particle.png', 'M_smoke_particle.png', 'L_smoke_particle.png'],
             random: true,
-            maxAliveParticles: 8,
-            lifespan: 200,
+            maxAliveParticles: 16,
+            lifespan: 250,
             gravityY: -200,
             scaleX: 1.5,
             scaleY: 1.5,
@@ -113,20 +119,22 @@ class LevelOne extends Phaser.Scene {
 
         // ===  C A M E R A  ===
         this.cameras.main.setSize(480, 384);
-        this.cameras.main.setBounds(0, 0, 480, 1472);
+        this.cameras.main.setBounds(0, 0, 480, 1504);
         this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25); // (target, [,roundPixels][,lerpX][,lerpY])
 
 
         // ===  P L A Y E R  C O L L I S I O N S   &   I N T E R A C T I O N S  ===
-        // environment
+        // regular ground and walls
         this.physics.add.collider(my.sprite.player, this.blocksLayer);
-
+        
+        // spikes kill
         this.physics.add.collider(my.sprite.player, this.spikeLayer, 
             ()=>{
-                this.scene.start("levelOne");
+                this.scene.start("levelTwo");
             }
         );
 
+        // half colliding platforms
         my.extraCollider = this.physics.add.collider(my.sprite.player, this.platformsLayer, null, function (obj1, obj2) {
             return((obj1.y + obj1.displayHeight/2) <= (obj2.y*16*SCALE + 5));
         });
@@ -144,17 +152,11 @@ class LevelOne extends Phaser.Scene {
         this.physics.add.overlap(my.sprite.player, my.sprite.spring2, (obj1, obj2) => {
             obj1.setVelocityY(this.JUMP_VELOCITY * 2);
         });
-        this.physics.add.overlap(my.sprite.player, my.sprite.spring3, (obj1, obj2) => {
-            obj1.setVelocityY(this.JUMP_VELOCITY * 2);
-        });
-        this.physics.add.overlap(my.sprite.player, my.sprite.spring4, (obj1, obj2) => {
-            obj1.setVelocityY(this.JUMP_VELOCITY * 2);
-        });
 
         // exit to next level
-        this.physics.add.overlap(my.sprite.player, my.sprite.exit, (obj1, obj2) => {
-            this.scene.start("levelTwo");
-        }); 
+        this.physics.add.overlap(my.sprite.player, this.exitGroup, (obj1, obj2) => {
+            this.scene.start('ending');
+        });
     }
 
     update(time, delta) {
@@ -204,7 +206,7 @@ class LevelOne extends Phaser.Scene {
 
         // End Scene
         if(Phaser.Input.Keyboard.JustDown(this.goNext)) {
-            this.scene.start('levelTwo');
+            this.scene.start('ending');
         }
     }
 

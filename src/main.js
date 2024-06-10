@@ -32,7 +32,7 @@ let config = {
     // map is 15x45 32px tiles: 480x1440
     width: 480, // camera width
     height: 320, // camera height
-    scene: [Load, LevelOne, Ending]
+    scene: [Load, LevelOne, LevelTwo, Ending]
 }
 
 var cursors;
