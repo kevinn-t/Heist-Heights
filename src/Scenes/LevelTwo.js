@@ -118,7 +118,7 @@ class LevelTwo extends Phaser.Scene {
 
 
         // ===  C A M E R A  ===
-        this.cameras.main.setSize(480, 384);
+        this.cameras.main.setSize(480, 384); // 15 tiles wide, 12 tiles tall
         this.cameras.main.setBounds(0, 0, 480, 1504);
         this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25); // (target, [,roundPixels][,lerpX][,lerpY])
 

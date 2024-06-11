@@ -7,8 +7,10 @@ class Load extends Phaser.Scene {
         this.load.setPath("./assets/tilemaps/");
         // Load tilemap information
         this.load.image("tilemap_tiles", "tilemap_packed.png");
-        this.load.tilemapTiledJSON("firstLevel", "LevelOne.tmj");   // Tilemap in JSON
-        this.load.tilemapTiledJSON("secondLevel", "LevelTwo.tmj");
+        this.load.tilemapTiledJSON("title", "title.tmj");
+        this.load.tilemapTiledJSON("background", "background.tmj"); // for exposition and credits
+        this.load.tilemapTiledJSON("firstLevel", "LevelOne.tmj");   // playable level
+        this.load.tilemapTiledJSON("secondLevel", "LevelTwo.tmj"); // playable level 2
         this.load.tilemapTiledJSON("ending", "End.tmj");
         this.load.spritesheet("tilemap_sheet", "tilemap_packed.png", {
             frameWidth: 16,
@@ -21,8 +23,9 @@ class Load extends Phaser.Scene {
         this.load.atlas("spring_sprites", "springs.png", "springs.json")
 
         // independent stuff
+        this.load.setPath("./assets");
         this.load.image('exit', 'exit.png');
-        this.load.bitmapFont('blocks_font', 'Kenney Blocks Font.png', "Kenney Blocks Font.fnt");
+        this.load.bitmapFont('blocks_font', 'Blocks Font.png', "Blocks Font.xml");
     }
 
     create() {
@@ -55,15 +58,7 @@ class Load extends Phaser.Scene {
             ],
         });
 
-        // this.anims.create({
-        //     key: 'spring',
-        //     defaultTextureKey: "spring_sprites",
-        //     frames: ["springUp1.png", "springUp2.png", "springUp1.png"],
-        //     frameRate: 15
-        // });
-
-         // ...and pass to the next Scene
-         this.scene.start("levelOne");
+        this.scene.start("titleScreen");
     }
 
     // Never get here since a new scene is started in create()

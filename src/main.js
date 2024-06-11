@@ -2,7 +2,7 @@
 // Created: 5/14/2024
 // Phaser: 3.70.0
 //
-// Mah Muhg
+// Heist Heights
 //
 // A upward side-scrolling platformer. 
 // 
@@ -31,8 +31,8 @@ let config = {
     },
     // map is 15x45 32px tiles: 480x1440
     width: 480, // camera width
-    height: 320, // camera height
-    scene: [Load, LevelOne, LevelTwo, Ending]
+    height: 384, // camera height 320
+    scene: [Load, TitleScreen, LevelOne, LevelTwo, Ending]
 }
 
 var cursors;
