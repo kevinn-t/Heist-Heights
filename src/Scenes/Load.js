@@ -23,8 +23,8 @@ class Load extends Phaser.Scene {
         this.load.atlas("spring_sprites", "springs.png", "springs.json")
 
         // independent stuff
-        this.load.setPath("./assets");
         this.load.image('exit', 'exit.png');
+        this.load.setPath("./assets");
         this.load.bitmapFont('blocks_font', 'Blocks Font.png', "Blocks Font.xml");
     }
 

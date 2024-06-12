@@ -75,7 +75,7 @@ class Ending extends Phaser.Scene {
         my.vfx.walking.stop();
 
         // === M E S S A G E  T E X T  ===
-        this.add.bitmapText(32, 336, 'blocks_font', 'Looks like your mug is in another house...', 24);
+        this.add.bitmapText(32, 336, 'blocks_font', 'Looks like your mug is in another tower...', 24);
     }
 
     update(time, delta) {
@@ -118,7 +118,7 @@ class Ending extends Phaser.Scene {
             my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
         }
 
-        if(my.sprite.player.x >= 223) {
+        if(my.sprite.player.x >= 447) {
             this.scene.start('credits');
         }
     }
