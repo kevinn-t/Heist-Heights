@@ -59,7 +59,7 @@ class LevelOne extends Phaser.Scene {
         this.physics.world.enable(this.jewels, Phaser.Physics.Arcade.STATIC_BODY);
         this.jewelGroup = this.add.group(this.jewels);
 
-        // springs
+        // springs :(
         my.sprite.spring1 = this.physics.add.staticSprite(80, 1168, 'spring_sprites', 'springUp1.png');
         my.sprite.spring1.setScale(SCALE);
         my.sprite.spring2 = this.physics.add.staticSprite(48, 816, 'spring_sprites', 'springUp1.png');
@@ -73,42 +73,23 @@ class LevelOne extends Phaser.Scene {
         my.sprite.exit = this.physics.add.staticSprite(432, 80, 'exit');
         my.sprite.exit.setScale(SCALE); 
 
-        // ===  P L A Y E R  ===
-        // init 
+
+        // ===  P L A Y E R I N I T  ===
         // original spawn: 80, 1344
         my.sprite.player = this.physics.add.sprite(80, 1344, "player_sprites", "playerIdle.png");
         my.sprite.player.setCollideWorldBounds(true);
         my.sprite.player.setScale(SCALE);
 
-        // movement controls
+
+        // ===  C O N T R O L S  ===
+        // movement
         cursors = this.input.keyboard.createCursorKeys();
         this.left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.right = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.jump = this.input.keyboard.addKey("SPACE");
-        
-        // extra tools
+        // extra
         this.reset = this.input.keyboard.addKey("R");
-        // debug key listener (assigned to E key)
-        this.input.keyboard.on('keydown-E', () => {
-            this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
-            this.physics.world.debugGraphic.clear()
-        }, this);
         this.goNext = this.input.keyboard.addKey("P");
-
-        // ===  P A R T I C L E S  ===
-        // walking vfx
-        my.vfx.walking = this.add.particles(0, 0, "particle_sprites", {
-            frames: ['S_smoke_particle.png', 'M_smoke_particle.png', 'L_smoke_particle.png'],
-            random: true,
-            maxAliveParticles: 8,
-            lifespan: 200,
-            gravityY: -200,
-            scaleX: 1.5,
-            scaleY: 1.5,
-            follow: my.sprite.player,
-            followOffset: {x:0, y:16}
-        });
-        my.vfx.walking.stop();
 
 
         // ===  C A M E R A  ===
@@ -118,26 +99,26 @@ class LevelOne extends Phaser.Scene {
 
 
         // ===  P L A Y E R  C O L L I S I O N S   &   I N T E R A C T I O N S  ===
-        // environment
+        // basic environment collisions
         this.physics.add.collider(my.sprite.player, this.blocksLayer);
 
-        this.physics.add.collider(my.sprite.player, this.spikeLayer, 
-            ()=>{
-                this.scene.start("levelOne");
-            }
-        );
+        // reset level if player hits a spike
+        this.physics.add.collider(my.sprite.player, this.spikeLayer, ()=>{
+            this.scene.start("levelOne");
+        });
 
+        // player can jump onto a platform from directly below
         my.extraCollider = this.physics.add.collider(my.sprite.player, this.platformsLayer, null, function (obj1, obj2) {
             return((obj1.y + obj1.displayHeight/2) <= (obj2.y*16*SCALE + 5));
         });
 
-        // jewels
+        // pick up jewels
         this.physics.add.overlap(my.sprite.player, this.jewelGroup, (obj1, obj2) => {
             obj2.destroy();
             this.score += 20;
         });
 
-        // springs
+        // springs launch player up
         this.physics.add.overlap(my.sprite.player, my.sprite.spring1, (obj1, obj2) => {
             obj1.setVelocityY(this.JUMP_VELOCITY * 2);
         });
@@ -155,6 +136,22 @@ class LevelOne extends Phaser.Scene {
         this.physics.add.overlap(my.sprite.player, my.sprite.exit, (obj1, obj2) => {
             this.scene.start("levelTwo");
         }); 
+
+
+        // ===  P A R T I C L E S  ===
+        // walking vfx
+        my.vfx.walking = this.add.particles(0, 0, "particle_sprites", {
+            frames: ['S_smoke_particle.png', 'M_smoke_particle.png', 'L_smoke_particle.png'],
+            random: true,
+            maxAliveParticles: 8,
+            lifespan: 200,
+            gravityY: -200,
+            scaleX: 1.5,
+            scaleY: 1.5,
+            follow: my.sprite.player,
+            followOffset: {x:0, y:16}
+        });
+        my.vfx.walking.stop();
     }
 
     update(time, delta) {

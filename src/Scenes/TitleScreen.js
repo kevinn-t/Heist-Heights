@@ -21,15 +21,16 @@ class TitleScreen extends Phaser.Scene {
         this.goNext = this.input.keyboard.addKey("P");
 
         // text objects
-        const title = this.add.bitmapText(90, 128, 'blocks_font', "Heist Heights", 48);
-        const prompt = this.add.bitmapText(96, 340, 'blocks_font', "Press any button to start", 24);
-        
+        const title = this.add.bitmapText(config.width/2, (config.height/2)-32, 'blocks_font', "Heist Heights", 48);
+        title.setOrigin(0.5, 0.5);
+        const prompt = this.add.bitmapText(config.width/2, 356, 'blocks_font', "Press any button to start", 24);
+        prompt.setOrigin(0.5, 0.5);
         // start on any key pressed
         this.input.keyboard.on('keydown', event => {
-            this.scene.start('levelOne');
+            this.scene.start('story');
         });
     }
-    
+
     update(){
     }
 }

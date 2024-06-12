@@ -80,26 +80,61 @@ class LevelTwo extends Phaser.Scene {
         this.exitGroup = this.add.group(this.exit);
 
         // ===  P L A Y E R  ===
-        // init 
         // original spawn: 48, 1392
         my.sprite.player = this.physics.add.sprite(48, 1392, "player_sprites", "playerIdle.png");
         my.sprite.player.setCollideWorldBounds(true);
         my.sprite.player.setScale(1.75);
 
-        // movement controls
+        // === C O N T R O L S  ===
+        // movment
         cursors = this.input.keyboard.createCursorKeys();
         this.left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.right = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.jump = this.input.keyboard.addKey("SPACE");
-        
-        // extra tools
+        // extra 
         this.reset = this.input.keyboard.addKey("R");
-        // debug key listener (assigned to E key)
-        this.input.keyboard.on('keydown-E', () => {
-            this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
-            this.physics.world.debugGraphic.clear()
-        }, this);
         this.goNext = this.input.keyboard.addKey("P");
+
+
+        // ===  C A M E R A  ===
+        this.cameras.main.setSize(480, 384); // 15 tiles wide, 12 tiles tall
+        this.cameras.main.setBounds(0, 0, 480, 1504);
+        this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25); // (target, [,roundPixels][,lerpX][,lerpY])
+
+
+        // ===  P L A Y E R  C O L L I S I O N S   &   I N T E R A C T I O N S  ===
+        // regular ground and walls
+        this.physics.add.collider(my.sprite.player, this.blocksLayer);
+        
+        // reset level if player hits a spike
+        this.physics.add.collider(my.sprite.player, this.spikeLayer, ()=>{
+            this.scene.start("levelTwo");
+        });
+
+        // player can jump onto a platform from directly below
+        my.extraCollider = this.physics.add.collider(my.sprite.player, this.platformsLayer, null, function (obj1, obj2) {
+            return((obj1.y + obj1.displayHeight/2) <= (obj2.y*16*SCALE + 5));
+        });
+
+        // pick up jewels
+        this.physics.add.overlap(my.sprite.player, this.jewelGroup, (obj1, obj2) => {
+            obj2.destroy();
+            this.score += 20;
+        });
+
+        // springs launch players up
+        this.physics.add.overlap(my.sprite.player, my.sprite.spring1, (obj1, obj2) => {
+            obj1.setVelocityY(this.JUMP_VELOCITY * 2);
+        });
+        this.physics.add.overlap(my.sprite.player, my.sprite.spring2, (obj1, obj2) => {
+            obj1.setVelocityY(this.JUMP_VELOCITY * 2);
+        });
+
+        // exit to next level
+        this.physics.add.overlap(my.sprite.player, this.exitGroup, (obj1, obj2) => {
+            this.scene.start('ending');
+        });
+
 
         // ===  P A R T I C L E S  ===
         // walking vfx
@@ -115,48 +150,6 @@ class LevelTwo extends Phaser.Scene {
             followOffset: {x:0, y:16}
         });
         my.vfx.walking.stop();
-
-
-        // ===  C A M E R A  ===
-        this.cameras.main.setSize(480, 384); // 15 tiles wide, 12 tiles tall
-        this.cameras.main.setBounds(0, 0, 480, 1504);
-        this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25); // (target, [,roundPixels][,lerpX][,lerpY])
-
-
-        // ===  P L A Y E R  C O L L I S I O N S   &   I N T E R A C T I O N S  ===
-        // regular ground and walls
-        this.physics.add.collider(my.sprite.player, this.blocksLayer);
-        
-        // spikes kill
-        this.physics.add.collider(my.sprite.player, this.spikeLayer, 
-            ()=>{
-                this.scene.start("levelTwo");
-            }
-        );
-
-        // half colliding platforms
-        my.extraCollider = this.physics.add.collider(my.sprite.player, this.platformsLayer, null, function (obj1, obj2) {
-            return((obj1.y + obj1.displayHeight/2) <= (obj2.y*16*SCALE + 5));
-        });
-
-        // jewels
-        this.physics.add.overlap(my.sprite.player, this.jewelGroup, (obj1, obj2) => {
-            obj2.destroy();
-            this.score += 20;
-        });
-
-        // springs
-        this.physics.add.overlap(my.sprite.player, my.sprite.spring1, (obj1, obj2) => {
-            obj1.setVelocityY(this.JUMP_VELOCITY * 2);
-        });
-        this.physics.add.overlap(my.sprite.player, my.sprite.spring2, (obj1, obj2) => {
-            obj1.setVelocityY(this.JUMP_VELOCITY * 2);
-        });
-
-        // exit to next level
-        this.physics.add.overlap(my.sprite.player, this.exitGroup, (obj1, obj2) => {
-            this.scene.start('ending');
-        });
     }
 
     update(time, delta) {

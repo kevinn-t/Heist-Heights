@@ -36,27 +36,28 @@ class Ending extends Phaser.Scene {
         this.decoLayer = this.map.createLayer("Deco", this.tileset, 0, 0);
         this.decoLayer.setScale(SCALE);
 
-        // ===  P L A Y E R  ===
+        // ===  P L A Y E R I N I T ===
         // init
         my.sprite.player = this.physics.add.sprite(48, 240, "player_sprites", "playerIdle.png");
         my.sprite.player.setCollideWorldBounds(true);
         my.sprite.player.setScale(SCALE);
 
-        // movement controls
+        // === C O N T R O L S ===
+        // movement
         cursors = this.input.keyboard.createCursorKeys();
         this.left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.right = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.climb = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.jump = this.input.keyboard.addKey("SPACE");
         this.fall = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        
-        // extra tools
-        this.reset = this.input.keyboard.addKey("R");
-        // debug key listener (assigned to E key)
-        this.input.keyboard.on('keydown-E', () => {
-            this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
-            this.physics.world.debugGraphic.clear()
-        }, this);
+
+        // ===  P L A Y E R  C O L L I S I O N S   &   I N T E R A C T I O N S  ===
+        // environment
+        this.physics.add.collider(my.sprite.player, this.blocksLayer);
+
+        my.extraCollider = this.physics.add.collider(my.sprite.player, this.platformsLayer, null, function (obj1, obj2) {
+            return((obj1.y + obj1.displayHeight/2) <= (obj2.y*16*SCALE + 5));
+        });
 
         // ===  P A R T I C L E S  ===
         // walking vfx
@@ -73,16 +74,8 @@ class Ending extends Phaser.Scene {
         });
         my.vfx.walking.stop();
 
-        // ===  P L A Y E R  C O L L I S I O N S   &   I N T E R A C T I O N S  ===
-        // environment
-        this.physics.add.collider(my.sprite.player, this.blocksLayer);
-
-        my.extraCollider = this.physics.add.collider(my.sprite.player, this.platformsLayer, null, function (obj1, obj2) {
-            return((obj1.y + obj1.displayHeight/2) <= (obj2.y*16*SCALE + 5));
-        });
-
         // === M E S S A G E  T E X T  ===
-        // this.add.bitmapText(48, 288, 'blocks_font', 'Looks like your mug is in another house...', 13);
+        this.add.bitmapText(32, 336, 'blocks_font', 'Looks like your mug is in another house...', 24);
     }
 
     update(time, delta) {
@@ -125,9 +118,8 @@ class Ending extends Phaser.Scene {
             my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
         }
 
-        // Reset Scene
-        if(Phaser.Input.Keyboard.JustDown(this.reset)) {
-            this.scene.start('levelOne');
+        if(my.sprite.player.x >= 223) {
+            this.scene.start('credits');
         }
     }
 }
